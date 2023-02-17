@@ -19,9 +19,23 @@ import { ElementList } from './element-list';
     <div style="min-height:300px; display:flex;border:1px solid black;background-color:yellow;">
     {{newState|json}}
     </div>
-    <div   *ngIf= "cartItem$ | async;let user ">
-    {{user.id | json }}
-    {{user.value | json }}
+    <div style="display:flex;gap:100 rem;padding:20px;justify-content:center"  *ngIf= "expertiseChanged$ | async;let user ">
+    <div>{{user.id | json }}</div>
+    <div>{{user.value | json }}</div>
+    </div>
+    <div style="display:flex;gap:100 rem;padding:20px;justify-content:center"  *ngIf= "specChangedItem$ | async;let user ">
+    <div>{{user.id | json }}</div>
+    <div>{{user.value | json }}</div>
+    </div>
+    <div style="display:flex;gap:100 rem;padding:20px;justify-content:center"  *ngIf= "bioChangedItem$ | async;let user ">
+    <div>{{user.id | json }}</div>
+    <div>{{user.value | json }}</div>
+    </div>
+    <div style="display:flex;gap:100 rem;">
+    <button style="background-color:red" (click)="launchSpec()">Specs</button>
+    <button style="background-color:green" (click)="launchExpertise()">Expertise</button>
+   <button style="background-color:blue" (click)="launchBio()">Bio</button>
+
     </div>
   `,
 })
@@ -44,10 +58,36 @@ export class App implements OnInit {
     ...this.state,
     items: [].concat(this.state, [7, 8, 9]),
   };
-  public cartItem$ = this.store.store$.pipe(
+  public expertiseChanged$ = this.store.store$.pipe(
     map((x) => x.expertise),
     distinctUntilChanged()
   );
+  public specChangedItem$ = this.store.store$.pipe(
+    map((x) => x.speciality),
+    distinctUntilChanged()
+  );
+  public bioChangedItem$ = this.store.store$.pipe(
+    map((x) => x.bio),
+    distinctUntilChanged()
+  );
+
+
+
+  launchSpec(){
+    this.data.speciality = { id: Math.floor(Math.random() * 10), value: false };
+    this.store.setData = this.data;
+  }
+
+  launchExpertise(){
+    this.data.expertise = { id: Math.floor(Math.random() * 10), value: false };
+    this.store.setData = this.data;
+  }
+
+  launchBio(){
+    this.data.bio = { id: Math.floor(Math.random() * 10), value: false };
+    this.store.setData = this.data;
+  }
+
 }
 
 bootstrapApplication(App);
